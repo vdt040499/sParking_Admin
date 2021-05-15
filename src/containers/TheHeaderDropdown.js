@@ -1,4 +1,5 @@
 import React from 'react'
+import Logo from '../assets/images/mainlogo.png'
 import {
   CBadge,
   CDropdown,
@@ -19,7 +20,7 @@ const TheHeaderDropdown = () => {
       <CDropdownToggle className="c-header-nav-link" caret={false}>
         <div className="c-avatar">
           <CImg
-            src={'avatars/6.jpg'}
+            src={Logo}
             className="c-avatar-img"
             alt="admin@bootstrapmaster.com"
           />
