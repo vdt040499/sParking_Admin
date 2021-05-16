@@ -1,4 +1,4 @@
-import React, { lazy } from 'react'
+import React, { lazy, useEffect, useState } from 'react'
 import {
   CCard,
   CCardBody,
@@ -7,13 +7,44 @@ import {
   CRow
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-
+import io from 'socket.io-client'
 import MainChartExample from '../charts/MainChartExample.js'
+
+let socket;
 
 const WidgetsDropdown = lazy(() => import('../widgets/WidgetsDropdown.js'))
 // const WidgetsBrand = lazy(() => import('../widgets/WidgetsBrand.js'))
 
 const Dashboard = () => {
+  const ENDPOINT = 'http://localhost:5000'
+  var connectionOptions =  {
+    "force new connection" : true,
+    "reconnectionAttempts": "Infinity",
+    "timeout" : 10000,
+    "transports" : ["websocket"]
+  };
+
+  const [users, setUsers] = useState([])
+
+  const updateList = (users) => {
+    setUsers(users)
+    console.log('Users: ', users)
+  }
+
+  useEffect(() => {
+    socket = io(ENDPOINT, connectionOptions)
+    socket.emit("initial", (users) => {
+      console.log(users)
+      setUsers(users)
+    })
+    socket.on("changeList", updateList)
+
+    return () => {
+      socket.disconnect()
+      socket.off()
+    }
+  }, [])
+
   return (
     <>
       <WidgetsDropdown />
@@ -48,87 +79,32 @@ const Dashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>
-                      <strong>63B4 12345</strong>
-                    </td>
-                    <td>
-                      <div className="text-info"><strong>Yiorgos Avraamu</strong></div>
-                      <div className="small text-muted">
-                        <span>Student</span> | Registered: Jan 1, 2015
-                      </div>
-                    </td>
-                    <td>
-                      <strong>17521022</strong>
-                    </td>
-                    <td>
-                      <strong>BIDV</strong>
-                    </td>
-                    <td className="text-center">
-                      <CIcon height={25} name="cil-x-circle" className="text-danger"/>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <strong>63B4 12345</strong>
-                    </td>
-                    <td>
-                      <div className="text-info"><strong>Avram Tarasios</strong></div>
-                      <div className="small text-muted">
+                  {
+                    users.map((user) => (
+                      <tr>
+                        <td>
+                          <strong>{user.plate}</strong>
+                        </td>
+                        <td>
+                          <div className="text-info"><strong>{user.username}</strong></div>
+                          <div className="small text-muted">
+                            <span>{user.position}</span> | Registered: Jan 1, 2015
+                          </div>
+                        </td>
+                        <td>
+                          <strong>{user.ID}</strong>
+                        </td>
+                        <td>
+                          <strong>BIDV</strong>
+                        </td>
+                        <td className="text-center">
+                          {!user.parkingStatus && <CIcon height={25} name="cil-x-circle" className="text-danger"/>}
+                          {user.parkingStatus && <CIcon height={25} name="cil-check-circle" className="text-success"/>}
 
-                        <span>Lecturer</span> | Registered: Jan 1, 2015
-                      </div>
-                    </td>
-                    <td>
-                      <strong>17521022</strong>
-                    </td>
-                    <td>
-                      <strong>TPBank</strong>
-                    </td>
-                    <td className="text-center">
-                      <CIcon height={25} name="cil-check-circle" className="text-success"/>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <strong>63B4 12345</strong>
-                    </td>
-                    <td>
-                      <div className="text-info"><strong>Quintin Ed</strong></div>
-                      <div className="small text-muted">
-                        <span>Student</span> | Registered: Jan 1, 2015
-                      </div>
-                    </td>
-                    <td>
-                      <strong>17521022</strong>
-                    </td>
-                    <td>
-                      <strong>ACB</strong>
-                    </td>
-                    <td className="text-center">
-                      <CIcon height={25} name="cil-x-circle" className="text-danger"/>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <strong>63B4 12345</strong>
-                    </td>
-                    <td>
-                      <div className="text-info"><strong>Enéas Kwadwo</strong></div>
-                      <div className="small text-muted">
-                        <span>Lecturer</span> | Registered: Jan 1, 2015
-                      </div>
-                    </td>
-                    <td>
-                      <strong>17521022</strong>
-                    </td>
-                    <td>
-                      <strong>Vietcombank</strong>
-                    </td>
-                    <td className="text-center">
-                      <CIcon height={25} name="cil-check-circle" className="text-success"/>
-                    </td>
-                  </tr>
+                        </td>
+                      </tr>
+                    ))
+                  }
                 </tbody>
               </table>
 
