@@ -7,14 +7,15 @@ import {
 import ChartLineSimple from '../charts/ChartLineSimple'
 import ChartBarSimple from '../charts/ChartBarSimple'
 
-const WidgetsDropdown = () => {
-  // render
+const WidgetsDropdown = (props) => {
+  const { curTickets } = props
+
   return (
     <CRow>
       <CCol sm="6" lg="3">
         <CWidgetDropdown
           color="gradient-primary"
-          header="1.204"
+          header={curTickets.length}
           text="Total Entries"
           footerSlot={
             <ChartLineSimple

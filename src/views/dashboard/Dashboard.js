@@ -7,47 +7,40 @@ import {
   CRow
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import io from 'socket.io-client'
+import socket from '../../socketIo.js'
 import MainChartExample from '../charts/MainChartExample.js'
 
-let socket;
+import { setUserList } from '../../store/reducers/userSlice'
+import { setCurTickets } from '../../store/reducers/ticketSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
 const WidgetsDropdown = lazy(() => import('../widgets/WidgetsDropdown.js'))
-// const WidgetsBrand = lazy(() => import('../widgets/WidgetsBrand.js'))
 
 const Dashboard = () => {
-  const ENDPOINT = 'http://localhost:5000'
-  var connectionOptions =  {
-    "force new connection" : true,
-    "reconnectionAttempts": "Infinity",
-    "timeout" : 10000,
-    "transports" : ["websocket"]
-  };
-
-  const [users, setUsers] = useState([])
+  const dispatch = useDispatch()
+  const userList = useSelector(state => state.user.userList)
+  const curTickets = useSelector(state => state.ticket.curTickets)
 
   const updateList = (users) => {
-    setUsers(users)
-    console.log('Users: ', users)
+    dispatch(setUserList(users))
   }
 
   useEffect(() => {
-    socket = io(ENDPOINT, connectionOptions)
-    socket.emit("initial", (users) => {
-      console.log(users)
-      setUsers(users)
+    socket.emit("initial", (users, curTickets) => {
+      dispatch(setUserList(users))
+      dispatch(setCurTickets(curTickets))
     })
     socket.on("changeList", updateList)
 
-    return () => {
-      socket.disconnect()
-      socket.off()
-    }
+    // return () => {
+    //   socket.disconnect()
+    //   socket.off()
+    // }
   }, [])
 
   return (
     <>
-      <WidgetsDropdown />
+      <WidgetsDropdown curTickets={curTickets}/>
       <CCard>
         <CCardBody>
           <CRow>
@@ -80,7 +73,7 @@ const Dashboard = () => {
                 </thead>
                 <tbody>
                   {
-                    users.map((user) => (
+                    userList.map((user) => (
                       <tr>
                         <td>
                           <strong>{user.plate}</strong>

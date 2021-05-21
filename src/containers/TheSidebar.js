@@ -1,6 +1,7 @@
 import React from 'react'
 import Logo from '../assets/images/mainlogo.png'
 import { useSelector, useDispatch } from 'react-redux'
+import { set } from '../store/reducers/styleSlice'
 import {
   CCreateElement,
   CSidebar,
@@ -19,12 +20,15 @@ import navigation from './_nav'
 
 const TheSidebar = () => {
   const dispatch = useDispatch()
-  const show = useSelector(state => state.sidebarShow)
+  const show = useSelector(state => state.style.sidebarShow)
+  console.log('hihi', show)
 
   return (
     <CSidebar
       show={show}
-      onShowChange={(val) => dispatch({type: 'set', sidebarShow: val })}
+      onShowChange={(val) => {
+        dispatch(set(val))
+      }}
     >
       <CSidebarBrand className="d-md-down-none" to="/">
         <div className="c-avatar">
