@@ -13,7 +13,6 @@ import {
   CImg,
   CCardTitle
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
 
 import { set } from '../store/reducers/styleSlice'
 

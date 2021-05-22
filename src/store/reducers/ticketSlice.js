@@ -1,7 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initTicket = {
-  curTickets: []
+  curTickets: [],
+  lastDateArr: [],
+  lastTicketArr: []
 }
 
 const ticketSlice = createSlice({
@@ -10,10 +12,16 @@ const ticketSlice = createSlice({
   reducers: {
     setCurTickets (state, action) {
       state.curTickets = action.payload
+    },
+    setLastDateArr (state, action) {
+      state.lastDateArr = action.payload
+    },
+    setLastTicketArr (state, action) {
+      state.lastTicketArr = action.payload
     }
   }
 })
 
 const { actions, reducer } = ticketSlice
-export const { setCurTickets } = actions
+export const { setCurTickets, setLastDateArr, setLastTicketArr } = actions
 export default reducer
