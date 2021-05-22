@@ -45,7 +45,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <WidgetsDropdown curTickets={curTickets}/>
+      <WidgetsDropdown curTickets={curTickets} lastTicketArr={lastTicketArr}/>
       <CCard>
         <CCardBody>
           <CRow>

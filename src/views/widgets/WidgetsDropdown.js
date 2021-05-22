@@ -8,21 +8,30 @@ import ChartLineSimple from '../charts/ChartLineSimple'
 import ChartBarSimple from '../charts/ChartBarSimple'
 
 const WidgetsDropdown = (props) => {
-  const { curTickets } = props
+  const { curTickets, lastTicketArr } = props
+
+  const numberWithCommas = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  const ticketToMoney = (ticketArr) => {
+    return ticketArr.map(ticket => ticket * 5000)
+  }
 
   return (
     <CRow>
       <CCol sm="6" lg="3">
         <CWidgetDropdown
           color="gradient-primary"
-          header={curTickets.length.toString()}
+          header={numberWithCommas(curTickets.length).toString()}
           text="Total Entries"
           footerSlot={
             <ChartLineSimple
               pointed
               className="c-chart-wrapper mt-3 mx-3"
               style={{height: '70px'}}
-              dataPoints={[65, 59, 84, 84, 51, 55, 40]}
+              // dataPoints={[65, 59, 84, 84, 51, 55, 40]}
+              dataPoints={lastTicketArr}
               pointHoverBackgroundColor="primary"
               label="Members"
               labels="months"
@@ -34,7 +43,7 @@ const WidgetsDropdown = (props) => {
       <CCol sm="6" lg="3">
         <CWidgetDropdown
           color="gradient-danger"
-          header="404"
+          header="150"
           text="Parked Slots"
           footerSlot={
             <ChartLineSimple
@@ -54,7 +63,7 @@ const WidgetsDropdown = (props) => {
       <CCol sm="6" lg="3">
         <CWidgetDropdown
           color="gradient-success"
-          header="1.411"
+          header="350"
           text="Available"
           footerSlot={
             <ChartLineSimple
@@ -74,7 +83,7 @@ const WidgetsDropdown = (props) => {
       <CCol sm="6" lg="3">
         <CWidgetDropdown
           color="gradient-warning"
-          header="4.499.000"
+          header={numberWithCommas(curTickets.length * 5000).toString()}
           text="Revenue"
           footerSlot={
             <ChartBarSimple
