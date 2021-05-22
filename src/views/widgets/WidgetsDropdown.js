@@ -15,7 +15,7 @@ const WidgetsDropdown = (props) => {
       <CCol sm="6" lg="3">
         <CWidgetDropdown
           color="gradient-primary"
-          header={curTickets.length}
+          header={curTickets.length.toString()}
           text="Total Entries"
           footerSlot={
             <ChartLineSimple

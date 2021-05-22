@@ -23,8 +23,9 @@ const Dashboard = () => {
   const lastDateArr = useSelector(state => state.ticket.lastDateArr)
   const lastTicketArr = useSelector(state => state.ticket.lastTicketArr)
 
-  const updateList = (users) => {
+  const updateList = (users, curTickets) => {
     dispatch(setUserList(users))
+    dispatch(setCurTickets(curTickets))
   }
 
   useEffect(() => {
@@ -77,8 +78,8 @@ const Dashboard = () => {
                 </thead>
                 <tbody>
                   {
-                    userList.map((user) => (
-                      <tr>
+                    userList.map((user, index) => (
+                      <tr key={index} >
                         <td>
                           <strong>{user.plate}</strong>
                         </td>
