@@ -8,14 +8,10 @@ import ChartLineSimple from '../charts/ChartLineSimple'
 import ChartBarSimple from '../charts/ChartBarSimple'
 
 const WidgetsDropdown = (props) => {
-  const { curTickets, lastTicketArr } = props
+  const { curTickets, space, lastTicketArr } = props
 
   const numberWithCommas = (x) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }
-
-  const ticketToMoney = (ticketArr) => {
-    return ticketArr.map(ticket => ticket * 5000)
   }
 
   return (
@@ -30,11 +26,10 @@ const WidgetsDropdown = (props) => {
               pointed
               className="c-chart-wrapper mt-3 mx-3"
               style={{height: '70px'}}
-              // dataPoints={[65, 59, 84, 84, 51, 55, 40]}
               dataPoints={lastTicketArr}
               pointHoverBackgroundColor="primary"
-              label="Members"
-              labels="months"
+              label="Entries"
+              // labels="months"
             />
           }
         />
@@ -43,7 +38,7 @@ const WidgetsDropdown = (props) => {
       <CCol sm="6" lg="3">
         <CWidgetDropdown
           color="gradient-danger"
-          header="150"
+          header={space.parked?.toString()}
           text="Parked Slots"
           footerSlot={
             <ChartLineSimple
@@ -63,7 +58,7 @@ const WidgetsDropdown = (props) => {
       <CCol sm="6" lg="3">
         <CWidgetDropdown
           color="gradient-success"
-          header="350"
+          header={space.avai?.toString()}
           text="Available"
           footerSlot={
             <ChartLineSimple

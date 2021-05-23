@@ -12,6 +12,7 @@ import {
 } from '@coreui/react'
 
 import usersData from './UsersData'
+import { useSelector } from 'react-redux'
 
 const getBadge = status => {
   switch (status) {
@@ -26,6 +27,7 @@ const getBadge = status => {
 const Users = () => {
   const history = useHistory()
   const queryPage = useLocation().search.match(/page=([0-9]+)/, '')
+  const userList = useSelector(state => state.user.userList)
   const currentPage = Number(queryPage && queryPage[1] ? queryPage[1] : 1)
   const [page, setPage] = useState(currentPage)
 
@@ -39,22 +41,21 @@ const Users = () => {
 
   return (
     <CRow>
-      <CCol xl={6}>
+      <CCol xl={12}>
         <CCard>
           <CCardHeader>
             Users
-            <small className="text-muted"> example</small>
           </CCardHeader>
           <CCardBody>
           <CDataTable
-            items={usersData}
+            items={userList}
             fields={[
-              { key: 'name', _classes: 'font-weight-bold' },
-              'registered', 'role', 'status'
+              { key: 'username', _classes: 'font-weight-bold' },
+              'plate', 'position', 'createdAt', 'balance'
             ]}
             hover
             striped
-            itemsPerPage={5}
+            itemsPerPage={10}
             activePage={page}
             clickableRows
             onRowClick={(item) => history.push(`/users/${item.id}`)}
@@ -72,8 +73,8 @@ const Users = () => {
           <CPagination
             activePage={page}
             onActivePageChange={pageChange}
-            pages={5}
-            doubleArrows={false} 
+            pages={Math.ceil(userList.length/10)}
+            doubleArrows={false}
             align="center"
           />
           </CCardBody>

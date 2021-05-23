@@ -11,7 +11,7 @@ import socket from '../../socketIo.js'
 import MainChartExample from '../charts/MainChartExample.js'
 
 import { setUserList } from '../../store/reducers/userSlice'
-import { setCurTickets, setLastDateArr, setLastTicketArr } from '../../store/reducers/ticketSlice'
+import { setCurTickets, setLastDateArr, setLastTicketArr, setSpace } from '../../store/reducers/ticketSlice'
 import { useDispatch, useSelector } from 'react-redux'
 
 const WidgetsDropdown = lazy(() => import('../widgets/WidgetsDropdown.js'))
@@ -22,18 +22,21 @@ const Dashboard = () => {
   const curTickets = useSelector(state => state.ticket.curTickets)
   const lastDateArr = useSelector(state => state.ticket.lastDateArr)
   const lastTicketArr = useSelector(state => state.ticket.lastTicketArr)
+  const space = useSelector(state => state.ticket.space)
 
-  const updateList = (users, curTickets) => {
+  const updateList = (users, curTickets, updatedSpace) => {
     dispatch(setUserList(users))
     dispatch(setCurTickets(curTickets))
+    dispatch(setSpace(updatedSpace))
   }
 
   useEffect(() => {
-    socket.emit("initial", (users, curTickets, dateArr, lastTicketArr) => {
+    socket.emit("initial", (users, curTickets, dateArr, lastTicketArr, space) => {
       dispatch(setUserList(users))
       dispatch(setCurTickets(curTickets))
       dispatch(setLastDateArr(dateArr))
       dispatch(setLastTicketArr(lastTicketArr))
+      dispatch(setSpace(space))
     })
     socket.on("changeList", updateList)
 
@@ -45,7 +48,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <WidgetsDropdown curTickets={curTickets} lastTicketArr={lastTicketArr}/>
+      <WidgetsDropdown curTickets={curTickets} space={space} lastTicketArr={lastTicketArr}/>
       <CCard>
         <CCardBody>
           <CRow>

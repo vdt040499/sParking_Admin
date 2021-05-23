@@ -3,7 +3,8 @@ import { createSlice } from '@reduxjs/toolkit'
 const initTicket = {
   curTickets: [],
   lastDateArr: [],
-  lastTicketArr: []
+  lastTicketArr: [],
+  space: {}
 }
 
 const ticketSlice = createSlice({
@@ -18,10 +19,13 @@ const ticketSlice = createSlice({
     },
     setLastTicketArr (state, action) {
       state.lastTicketArr = action.payload
+    },
+    setSpace (state, action) {
+      state.space = action.payload
     }
   }
 })
 
 const { actions, reducer } = ticketSlice
-export const { setCurTickets, setLastDateArr, setLastTicketArr } = actions
+export const { setCurTickets, setLastDateArr, setLastTicketArr, setSpace } = actions
 export default reducer
