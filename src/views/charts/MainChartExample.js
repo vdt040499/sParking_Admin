@@ -10,7 +10,7 @@ const brandWarning = getStyle('warning')
 
 
 const MainChartExample = (attributes) => {
-  const { lastDateArr, lastTicketArr } = attributes
+  const { space, lastDateArr, lastTicketArr } = attributes
 
   const random = (min, max)=>{
     return Math.floor(Math.random() * (max - min + 1) + min)
@@ -23,13 +23,7 @@ const MainChartExample = (attributes) => {
   const defaultDatasetsForLine = (()=>{
     let elements = 7
     const data1 = lastTicketArr
-    const data2 = ticketToMoney(lastTicketArr)
-    const data3 = []
-    for (let i = 0; i <= elements; i++) {
-      // data1.push(random(50, 200))
-      // data2.push(random(80, 100))
-      data3.push(65)
-    }
+
     return [
       {
         label: 'My First dataset',
@@ -123,7 +117,7 @@ const MainChartExample = (attributes) => {
   })()
 
   const defaultDatasetsForPie = (() => {
-    const data3 = [150, 350]
+    const data3 = [space.parked, space.avai]
 
     return [
         {

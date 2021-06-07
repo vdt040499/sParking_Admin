@@ -58,7 +58,7 @@ const Dashboard = () => {
             <CCol sm="7" className="d-none d-md-block">
             </CCol>
           </CRow>
-          <MainChartExample lastDateArr={lastDateArr} lastTicketArr={lastTicketArr} style={{height: '300px', marginTop: '40px'}}/>
+          <MainChartExample space={space} lastDateArr={lastDateArr} lastTicketArr={lastTicketArr} style={{height: '300px', marginTop: '40px'}}/>
         </CCardBody>
       </CCard>
 
