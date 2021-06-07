@@ -3,25 +3,20 @@ import { CChart, CChartLine } from '@coreui/react-chartjs'
 import { getStyle, hexToRgba } from '@coreui/utils'
 import { CCol, CRow } from '@coreui/react'
 
-const brandSuccess = getStyle('success') || '#4dbd74'
 const brandInfo = getStyle('info') || '#20a8d8'
-const brandDanger = getStyle('danger') || '#f86c6b'
-const brandWarning = getStyle('warning')
+// const brandSuccess = getStyle('success') || '#4dbd74'
+// const brandDanger = getStyle('danger') || '#f86c6b'
+// const brandWarning = getStyle('warning')
 
 
 const MainChartExample = (attributes) => {
   const { space, lastDateArr, lastTicketArr } = attributes
-
-  const random = (min, max)=>{
-    return Math.floor(Math.random() * (max - min + 1) + min)
-  }
 
   const ticketToMoney = (ticketArr) => {
     return ticketArr.map(ticket => ticket * 5000)
   }
 
   const defaultDatasetsForLine = (()=>{
-    let elements = 7
     const data1 = lastTicketArr
 
     return [
@@ -33,23 +28,6 @@ const MainChartExample = (attributes) => {
         borderWidth: 2,
         data: data1
       },
-      // {
-      //   label: 'My Second dataset',
-      //   backgroundColor: 'transparent',
-      //   borderColor: brandSuccess,
-      //   pointHoverBackgroundColor: brandSuccess,
-      //   borderWidth: 2,
-      //   data: data2
-      // },
-      // {
-      //   label: 'My Third dataset',
-      //   backgroundColor: 'transparent',
-      //   borderColor: brandDanger,
-      //   pointHoverBackgroundColor: brandDanger,
-      //   borderWidth: 1,
-      //   borderDash: [8, 5],
-      //   data: data3
-      // }
     ]
   })()
 

@@ -11,7 +11,6 @@ import {
   CPagination
 } from '@coreui/react'
 
-import usersData from './UsersData'
 import { useSelector } from 'react-redux'
 
 const getBadge = status => {
