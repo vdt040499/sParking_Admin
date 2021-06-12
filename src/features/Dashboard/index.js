@@ -8,13 +8,13 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import socket from '../../socketIo.js'
-import MainChartExample from '../charts/MainChartExample.js'
+import MainChartExample from '../../components/charts/MainChartExample'
 
 import { setUserList } from '../../store/reducers/userSlice'
 import { setCurTickets, setLastDateArr, setLastTicketArr, setSpace } from '../../store/reducers/ticketSlice'
 import { useDispatch, useSelector } from 'react-redux'
 
-const WidgetsDropdown = lazy(() => import('../widgets/WidgetsDropdown.js'))
+const WidgetsDropdown = lazy(() => import('../../components/widgets/WidgetsDropdown'))
 
 const Dashboard = () => {
   const dispatch = useDispatch()
