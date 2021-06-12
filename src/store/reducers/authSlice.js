@@ -15,6 +15,14 @@ export const login = createAsyncThunk(
   }
 )
 
+export const register = createAsyncThunk(
+  'user/register',
+  async (values) => {
+    const data = await authApi.register(values)
+    return data.message
+  }
+)
+
 const authSlice = createSlice({
   name: 'auth',
   initialState: initAuth,

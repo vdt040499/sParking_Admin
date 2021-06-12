@@ -8,7 +8,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 import { icons } from './assets/icons'
-
+import { SnackbarProvider } from 'notistack'
 import { Provider } from 'react-redux'
 import store from './store/store'
 
@@ -16,7 +16,9 @@ React.icons = icons
 
 ReactDOM.render(
   <Provider store={store}>
-    <App/>
+    <SnackbarProvider maxSnack={3} anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}>
+      <App/>
+    </SnackbarProvider>
   </Provider>,
   document.getElementById('root')
 );

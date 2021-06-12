@@ -18,6 +18,7 @@ const PasswordField = (props) => {
 
   return (
     <CInput
+      {...inputProps}
       type="password"
       onChange={onChangeValue}
       value={value}

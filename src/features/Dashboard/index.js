@@ -13,11 +13,13 @@ import MainChartExample from '../../components/charts/MainChartExample'
 import { setUserList } from '../../store/reducers/userSlice'
 import { setCurTickets, setLastDateArr, setLastTicketArr, setSpace } from '../../store/reducers/ticketSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import { Redirect } from 'react-router'
 
 const WidgetsDropdown = lazy(() => import('../../components/widgets/WidgetsDropdown'))
 
 const Dashboard = () => {
   const dispatch = useDispatch()
+  const auth = useSelector(state => state.auth)
   const userList = useSelector(state => state.user.userList)
   const curTickets = useSelector(state => state.ticket.curTickets)
   const lastDateArr = useSelector(state => state.ticket.lastDateArr)
@@ -113,6 +115,7 @@ const Dashboard = () => {
           </CCard>
         </CCol>
       </CRow>
+      {!auth.authen && <Redirect from="/" to="/login" />}
     </>
   )
 }
