@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from '@coreui/react'
+
 import {
   TheContent,
   TheSidebar,
@@ -7,6 +9,7 @@ import {
 } from './index'
 
 const TheLayout = () => {
+  const [info, setInfo] = useState(true)
 
   return (
     <div className="c-app c-default-layout">

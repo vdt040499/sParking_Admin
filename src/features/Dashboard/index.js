@@ -1,4 +1,5 @@
-import React, { lazy, useEffect } from 'react'
+import React, { lazy, useEffect, useState } from 'react'
+
 import {
   CCard,
   CCardBody,
@@ -14,11 +15,14 @@ import { setUserList } from '../../store/reducers/userSlice'
 import { setCurTickets, setLastDateArr, setLastTicketArr, setSpace } from '../../store/reducers/ticketSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { Redirect } from 'react-router'
+import EditSystem from './EditSystem/index.js'
+import EditSystemForm from './EditSystem/EditSystemForm.js'
 
 const WidgetsDropdown = lazy(() => import('../../components/widgets/WidgetsDropdown'))
 
 const Dashboard = () => {
   const dispatch = useDispatch()
+
   const auth = useSelector(state => state.auth)
   const userList = useSelector(state => state.user.userList)
   const curTickets = useSelector(state => state.ticket.curTickets)
@@ -75,9 +79,8 @@ const Dashboard = () => {
                 <thead className="thead-light">
                   <tr>
                     <th>License Number</th>
-                    <th>User</th>
                     <th>Card ID</th>
-                    <th>Payment Method</th>
+                    <th>User</th>
                     <th className="text-center">Status</th>
                   </tr>
                 </thead>
@@ -89,16 +92,13 @@ const Dashboard = () => {
                           <strong>{user.plate}</strong>
                         </td>
                         <td>
+                          <strong>{user.ID}</strong>
+                        </td>
+                        <td>
                           <div className="text-info"><strong>{user.username}</strong></div>
                           <div className="small text-muted">
                             <span>{user.position}</span> | Registered: Jan 1, 2015
                           </div>
-                        </td>
-                        <td>
-                          <strong>{user.ID}</strong>
-                        </td>
-                        <td>
-                          <strong>BIDV</strong>
                         </td>
                         <td className="text-center">
                           {!user.parkingStatus && <CIcon height={25} name="cil-x-circle" className="text-danger"/>}
@@ -115,6 +115,7 @@ const Dashboard = () => {
           </CCard>
         </CCol>
       </CRow>
+      <EditSystem />
       {!auth.authen && <Redirect from="/" to="/login" />}
     </>
   )

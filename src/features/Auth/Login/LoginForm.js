@@ -23,7 +23,6 @@ const LoginForm = (props) => {
   const userForm = useForm({ defaultValues: { email: '', password: '' }})
 
   const handleLoginSubmit = (values) => {
-    console.log(userForm.getValues())
     if (props.onSubmit) {
       props.onSubmit(values)
     }
