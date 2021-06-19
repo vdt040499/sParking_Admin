@@ -1,4 +1,4 @@
-import React, { lazy, useEffect, useState } from 'react'
+import React, { lazy, useEffect } from 'react'
 
 import {
   CCard,
@@ -12,11 +12,9 @@ import socket from '../../socketIo.js'
 import MainChartExample from '../../components/charts/MainChartExample'
 
 import { setUserList } from '../../store/reducers/userSlice'
-import { setCurTickets, setLastDateArr, setLastTicketArr, setSpace } from '../../store/reducers/ticketSlice'
+import { setTicketList, setLastDateArr, setLastTicketArr, setSpace, setAllTicketList } from '../../store/reducers/systemSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { Redirect } from 'react-router'
-import EditSystem from './EditSystem/index.js'
-import EditSystemForm from './EditSystem/EditSystemForm.js'
 
 const WidgetsDropdown = lazy(() => import('../../components/widgets/WidgetsDropdown'))
 
@@ -25,21 +23,23 @@ const Dashboard = () => {
 
   const auth = useSelector(state => state.auth)
   const userList = useSelector(state => state.user.userList)
-  const curTickets = useSelector(state => state.ticket.curTickets)
-  const lastDateArr = useSelector(state => state.ticket.lastDateArr)
-  const lastTicketArr = useSelector(state => state.ticket.lastTicketArr)
-  const space = useSelector(state => state.ticket.space)
+  const ticketList = useSelector(state => state.system.ticketList)
+  const lastDateArr = useSelector(state => state.system.lastDateArr)
+  const lastTicketArr = useSelector(state => state.system.lastTicketArr)
+  const space = useSelector(state => state.system.space)
 
-  const updateList = (users, curTickets, updatedSpace) => {
+  const updateList = (users, ticketList, allTicketList, updatedSpace) => {
     dispatch(setUserList(users))
-    dispatch(setCurTickets(curTickets))
+    dispatch(setTicketList(ticketList))
+    dispatch(setAllTicketList(allTicketList))
     dispatch(setSpace(updatedSpace))
   }
 
   useEffect(() => {
-    socket.emit("initial", (users, curTickets, dateArr, lastTicketArr, space) => {
+    socket.emit("initial", (users, ticketList, allTicketList, dateArr, lastTicketArr, space) => {
       dispatch(setUserList(users))
-      dispatch(setCurTickets(curTickets))
+      dispatch(setTicketList(ticketList))
+      dispatch(setAllTicketList(allTicketList))
       dispatch(setLastDateArr(dateArr))
       dispatch(setLastTicketArr(lastTicketArr))
       dispatch(setSpace(space))
@@ -54,7 +54,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <WidgetsDropdown curTickets={curTickets} space={space} lastTicketArr={lastTicketArr}/>
+      <WidgetsDropdown ticketList={ticketList} space={space} lastTicketArr={lastTicketArr}/>
       <CCard>
         <CCardBody>
           <CRow>
@@ -115,7 +115,6 @@ const Dashboard = () => {
           </CCard>
         </CCol>
       </CRow>
-      <EditSystem />
       {!auth.authen && <Redirect from="/" to="/login" />}
     </>
   )

@@ -36,6 +36,7 @@ const Colors = React.lazy(() => import('./components/theme/colors/Colors'));
 const Typography = React.lazy(() => import('./components/theme/typography/Typography'));
 const Widgets = React.lazy(() => import('./components/widgets/Widgets'));
 const Users = React.lazy(() => import('./features/Users/Users'));
+const Tickets = React.lazy(() => import('./features/Tickets/Tickets'));
 const User = React.lazy(() => import('./features/Users/User'));
 
 const routes = [
@@ -78,6 +79,7 @@ const routes = [
   { path: '/notifications/toaster', name: 'Toaster', component: Toaster },
   { path: '/widgets', name: 'Widgets', component: Widgets },
   { path: '/users', exact: true,  name: 'Users', component: Users },
+  { path: '/tickets', exact: true,  name: 'Tickets', component: Tickets },
   { path: '/users/:id', exact: true, name: 'User Details', component: User }
 ];
 

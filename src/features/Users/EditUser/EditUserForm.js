@@ -1,14 +1,18 @@
 import CIcon from '@coreui/icons-react'
-import { CButton, CCol, CForm, CInputGroup, CInputGroupPrepend, CInputGroupText, CRow } from '@coreui/react'
+import { CForm, CInputGroup, CInputGroupPrepend, CInputGroupText } from '@coreui/react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import { useSelector } from 'react-redux'
 import Dialog from 'src/components/dialog/Dialog'
 import TextField from 'src/components/form-control/TextField'
 
-const EditSystemForm = () => {
-  const systemForm = useForm({ defaultValues: {
-    email: '',
-    password: ''
+const EditUserForm = () => {
+  const parkedSlots = useSelector(state => state.system.space.parked)
+  const avaiSlots = useSelector(state => state.system.space.avai)
+
+  const userForm = useForm({ defaultValues: {
+    parked: parkedSlots,
+    avai: avaiSlots
   }})
 
   return (
@@ -18,18 +22,18 @@ const EditSystemForm = () => {
           <CInputGroup className="mb-3">
             <CInputGroupPrepend>
               <CInputGroupText>
-                <CIcon name="cil-user" />
+                <CIcon name="cil-user" className="text-danger"/>
               </CInputGroupText>
             </CInputGroupPrepend>
-            <TextField name='email' placeholder='Email' form={systemForm}/>
+            <TextField name='parked' placeholder='Parked slots' form={userForm}/>
           </CInputGroup>
           <CInputGroup className="mb-4">
             <CInputGroupPrepend>
               <CInputGroupText>
-                <CIcon name="cil-lock-locked" />
+                <CIcon name="cil-user" className="text-success"/>
               </CInputGroupText>
             </CInputGroupPrepend>
-            <TextField name='password' placeholder='Password' form={systemForm}/>
+            <TextField name='avai' placeholder='Available slots' form={userForm}/>
           </CInputGroup>
         </form>
       </CForm>
@@ -37,4 +41,4 @@ const EditSystemForm = () => {
   )
 }
 
-export default EditSystemForm
+export default EditUserForm

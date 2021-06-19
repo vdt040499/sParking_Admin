@@ -1,9 +1,9 @@
 import React from 'react'
-import EditSystemForm from './EditSystemForm'
+import EditUserForm from './EditUserForm'
 
 const EditSystem = () => {
   return (
-    <EditSystemForm />
+    <EditUserForm />
   )
 }
 

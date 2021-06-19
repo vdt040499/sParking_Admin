@@ -14,7 +14,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { setUserList } from 'src/store/reducers/userSlice'
 import socket from 'src/socketIo'
-import { setLoading } from 'src/store/reducers/systemSlice'
+import { setAllTicketList, setLoading } from 'src/store/reducers/systemSlice'
 
 const getBadge = status => {
   switch (status) {
@@ -29,23 +29,23 @@ const getBadge = status => {
   }
 }
 
-const Users = () => {
+const Tickets = () => {
   const history = useHistory()
   const dispatch = useDispatch()
   const queryPage = useLocation().search.match(/page=([0-9]+)/, '')
-  const userList = useSelector(state => state.user.userList)
   const loading = useSelector(state => state.system.loading)
+  const allTicketList = useSelector(state => state.system.allTicketList)
   const currentPage = Number(queryPage && queryPage[1] ? queryPage[1] : 1)
   const [page, setPage] = useState(currentPage)
 
-  const updateList = (users, ticketList, updatedSpace) => {
-    dispatch(setUserList(users))
+  const updateList = (users, ticketList, allTicketList, updatedSpace) => {
+    dispatch(setAllTicketList(allTicketList))
   }
 
   useEffect(() => {
-    socket.emit("initial", (users, ticketList, dateArr, lastTicketArr, space) => {
+    socket.emit("initial", (users, ticketList, allTicketList, dateArr, lastTicketArr, space) => {
       dispatch(setLoading(true))
-      dispatch(setUserList(users))
+      dispatch(setAllTicketList(allTicketList))
       dispatch(setLoading(false))
     })
     socket.on("changeList", updateList)
@@ -74,14 +74,14 @@ const Users = () => {
       <CCol xl={12}>
         <CCard>
           <CCardHeader>
-            Users
+            Traffic
           </CCardHeader>
           <CCardBody>
           <CDataTable
-            items={userList}
+            items={allTicketList}
             fields={[
-              { key: 'username', _classes: 'font-weight-bold' },
-              'plate', 'position', 'createdAt', 'bank', 'balance'
+              'plate', { key: 'username', _classes: 'font-weight-bold' },
+              'position', 'createdAt'
             ]}
             hover
             striped
@@ -91,27 +91,25 @@ const Users = () => {
             // clickableRows
             // onRowClick={(item) => history.push(`/users/${item.id}`)}
             scopedSlots = {{
+              'username':
+              (item)=>(
+                <td>
+                    {item.user.username}
+                </td>
+              ),
               'plate':
                 (item)=>(
                   <td>
-                    <CBadge color={getBadge(item.plate)}>
-                      {item.plate}
+                    <CBadge color={getBadge(item.user.plate)}>
+                      {item.user.plate}
                     </CBadge>
                   </td>
                 ),
               'position':
                 (item)=>(
                   <td>
-                    <CBadge color={getBadge(item.position)}>
-                      {item.position}
-                    </CBadge>
-                  </td>
-                ),
-              'bank':
-                (item)=>(
-                  <td>
-                    <CBadge color={getBadge(item?.moneySource?.bank)}>
-                      {item?.moneySource?.bank}
+                    <CBadge color={getBadge(item.user.position)}>
+                      {item.user.position}
                     </CBadge>
                   </td>
                 )
@@ -131,4 +129,4 @@ const Users = () => {
   )
 }
 
-export default Users
+export default Tickets

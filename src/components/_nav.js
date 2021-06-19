@@ -13,6 +13,12 @@ const _nav =  [
     name: 'Users',
     to: '/users',
     icon: <CIcon name="cil-user" customClasses="c-sidebar-nav-icon"/>,
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Tickets',
+    to: '/tickets',
+    icon: <CIcon name="cil-allocine" customClasses="c-sidebar-nav-icon"/>,
   }
 ]
 

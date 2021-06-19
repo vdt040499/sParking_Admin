@@ -8,7 +8,7 @@ import ChartLineSimple from '../charts/ChartLineSimple'
 import ChartBarSimple from '../charts/ChartBarSimple'
 
 const WidgetsDropdown = (props) => {
-  const { curTickets, space, lastTicketArr } = props
+  const { ticketList, space, lastTicketArr } = props
 
   const numberWithCommas = (x) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -19,7 +19,7 @@ const WidgetsDropdown = (props) => {
       <CCol sm="6" lg="3">
         <CWidgetDropdown
           color="gradient-primary"
-          header={numberWithCommas(curTickets.length).toString()}
+          header={numberWithCommas(ticketList.length).toString()}
           text="Total Entries"
           footerSlot={
             <ChartLineSimple
@@ -78,7 +78,7 @@ const WidgetsDropdown = (props) => {
       <CCol sm="6" lg="3">
         <CWidgetDropdown
           color="gradient-warning"
-          header={numberWithCommas(curTickets.length * 5000).toString()}
+          header={numberWithCommas(ticketList.length * 5000).toString()}
           text="Revenue"
           footerSlot={
             <ChartBarSimple
