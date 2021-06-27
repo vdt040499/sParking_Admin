@@ -12,9 +12,9 @@ import {
 } from '@coreui/react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { setUserList } from 'src/store/reducers/userSlice'
 import socket from 'src/socketIo'
 import { setAllTicketList, setLoading } from 'src/store/reducers/systemSlice'
+import { convertToDateTime } from 'src/reusable/formatDateTime'
 
 const getBadge = status => {
   switch (status) {
@@ -74,20 +74,24 @@ const Tickets = () => {
       <CCol xl={12}>
         <CCard>
           <CCardHeader>
-            Traffic
+            Tickets
           </CCardHeader>
           <CCardBody>
           <CDataTable
             items={allTicketList}
             fields={[
-              'plate', { key: 'username', _classes: 'font-weight-bold' },
-              'position', 'createdAt'
+              { key: 'plate', _classes: 'text-center', sorter: false },
+              { key: 'username', _classes: 'font-weight-bold', sorter: false },
+              { key: 'position', _classes: 'text-center', sorter: false },
+              { key: 'createdAt', _classes: 'text-center' }
             ]}
             hover
             striped
+            columnFilter
+            sorter
             loading={loading}
-            // itemsPerPage={10}
-            // activePage={page}
+            itemsPerPage={10}
+            activePage={page}
             // clickableRows
             // onRowClick={(item) => history.push(`/users/${item.id}`)}
             scopedSlots = {{
@@ -99,7 +103,7 @@ const Tickets = () => {
               ),
               'plate':
                 (item)=>(
-                  <td>
+                  <td className="text-center">
                     <CBadge color={getBadge(item.user.plate)}>
                       {item.user.plate}
                     </CBadge>
@@ -107,21 +111,27 @@ const Tickets = () => {
                 ),
               'position':
                 (item)=>(
-                  <td>
+                  <td className="text-center">
                     <CBadge color={getBadge(item.user.position)}>
                       {item.user.position}
                     </CBadge>
                   </td>
+                ),
+              'createdAt':
+                (item)=>(
+                  <td className="text-center">
+                    {convertToDateTime(item.createdAt)}
+                  </td>
                 )
             }}
           />
-          {/* <CPagination
+          <CPagination
             activePage={page}
             onActivePageChange={pageChange}
-            pages={Math.ceil(userList.length/10)}
+            pages={Math.ceil(allTicketList.length/10)}
             doubleArrows={false}
             align="center"
-          /> */}
+          />
           </CCardBody>
         </CCard>
       </CCol>

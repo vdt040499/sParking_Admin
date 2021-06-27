@@ -18,7 +18,7 @@ const _nav =  [
     _tag: 'CSidebarNavItem',
     name: 'Tickets',
     to: '/tickets',
-    icon: <CIcon name="cil-allocine" customClasses="c-sidebar-nav-icon"/>,
+    icon: <CIcon name="cil-puzzle" customClasses="c-sidebar-nav-icon"/>,
   }
 ]
 

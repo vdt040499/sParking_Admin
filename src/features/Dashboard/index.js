@@ -1,10 +1,13 @@
-import React, { lazy, useEffect } from 'react'
+import React, { lazy, useEffect, useState } from 'react'
 
 import {
+  CBadge,
   CCard,
   CCardBody,
   CCardHeader,
   CCol,
+  CDataTable,
+  CPagination,
   CRow
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
@@ -14,12 +17,24 @@ import MainChartExample from '../../components/charts/MainChartExample'
 import { setUserList } from '../../store/reducers/userSlice'
 import { setTicketList, setLastDateArr, setLastTicketArr, setSpace, setAllTicketList } from '../../store/reducers/systemSlice'
 import { useDispatch, useSelector } from 'react-redux'
-import { Redirect } from 'react-router'
+import { Redirect, useHistory, useLocation } from 'react-router'
+import { convertToDate } from 'src/reusable/formatDateTime.js'
 
 const WidgetsDropdown = lazy(() => import('../../components/widgets/WidgetsDropdown'))
 
+const getBadge = status => {
+  switch (status) {
+    default: return 'primary'
+  }
+}
+
 const Dashboard = () => {
+  const history = useHistory()
   const dispatch = useDispatch()
+
+  const [page, setPage] = useState(currentPage)
+  const queryPage = useLocation().search.match(/page=([0-9]+)/, '')
+  const currentPage = Number(queryPage && queryPage[1] ? queryPage[1] : 1)
 
   const auth = useSelector(state => state.auth)
   const userList = useSelector(state => state.user.userList)
@@ -52,6 +67,15 @@ const Dashboard = () => {
     // }
   }, [])
 
+  const pageChange = newPage => {
+    currentPage !== newPage && history.push(`/users?page=${newPage}`)
+  }
+
+  const  filterUserList = (userList) => {
+    const filterdList = userList.filter(user => user.position !== 'Admin')
+    return filterdList
+  }
+
   return (
     <>
       <WidgetsDropdown ticketList={ticketList} space={space} lastTicketArr={lastTicketArr}/>
@@ -75,42 +99,62 @@ const Dashboard = () => {
               Ticket Tracker
             </CCardHeader>
             <CCardBody>
-              <table className="table table-hover table-outline mb-0 d-none d-sm-table">
-                <thead className="thead-light">
-                  <tr>
-                    <th>License Number</th>
-                    <th>Card ID</th>
-                    <th>User</th>
-                    <th className="text-center">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {
-                    userList.map((user, index) => (
-                      <tr key={index} >
-                        <td>
-                          <strong>{user.plate}</strong>
-                        </td>
-                        <td>
-                          <strong>{user.ID}</strong>
-                        </td>
-                        <td>
-                          <div className="text-info"><strong>{user.username}</strong></div>
+              <CDataTable
+                items={filterUserList(userList)}
+                fields={[
+                  { key: 'plate', label: 'License Number', _classes: 'font-weight-bold text-center', sorter: false},
+                  { key: 'ID', label: 'Card ID', _classes: 'font-weight-bold text-center' },
+                  { key: 'user', sorter: false, filter: false },
+                  { key: 'status', _classes: 'text-center', sorter: false, filter: false }
+                ]}
+                hover
+                striped
+                columnFilter
+                sorter
+                itemsPerPage={10}
+                activePage={page}
+                // clickableRows
+                // onRowClick={(item) => history.push(`/users/${item.id}`)}
+                scopedSlots = {{
+                  'user':
+                    (item)=>(
+                      <td>
+                        <div className="text-info"><strong>{item.username}</strong></div>
                           <div className="small text-muted">
-                            <span>{user.position}</span> | Registered: Jan 1, 2015
+                            <span>{item.position}</span> | Registered: {convertToDate(item.createdAt)}
                           </div>
-                        </td>
-                        <td className="text-center">
-                          {!user.parkingStatus && <CIcon height={25} name="cil-x-circle" className="text-danger"/>}
-                          {user.parkingStatus && <CIcon height={25} name="cil-check-circle" className="text-success"/>}
-
-                        </td>
-                      </tr>
-                    ))
-                  }
-                </tbody>
-              </table>
-
+                      </td>
+                    ),
+                  'plate':
+                    (item)=>(
+                      <td className="text-center">
+                        <CBadge color={getBadge(item.plate)}>
+                          {item.plate}
+                        </CBadge>
+                      </td>
+                    ),
+                  'ID':
+                  (item)=>(
+                    <td className="text-center">
+                      <strong>{item.ID}</strong>
+                    </td>
+                  ),
+                  'status':
+                    (item)=>(
+                      <td className="text-center">
+                        {!item.parkingStatus && <CIcon height={25} name="cil-x-circle" className="text-danger"/>}
+                        {item.parkingStatus && <CIcon height={25} name="cil-check-circle" className="text-success"/>}
+                      </td>
+                    )
+                }}
+              />
+              <CPagination
+                activePage={page}
+                onActivePageChange={pageChange}
+                pages={Math.ceil(userList.length/10)}
+                doubleArrows={false}
+                align="center"
+              />
             </CCardBody>
           </CCard>
         </CCol>

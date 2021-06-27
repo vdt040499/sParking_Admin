@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setUserList } from 'src/store/reducers/userSlice'
 import socket from 'src/socketIo'
 import { setLoading } from 'src/store/reducers/systemSlice'
+import { convertToDateTime } from 'src/reusable/formatDateTime'
 
 const getBadge = status => {
   switch (status) {
@@ -60,14 +61,18 @@ const Users = () => {
     console.log(loading)
   }, [loading])
 
+  useEffect(() => {
+    currentPage !== page && setPage(currentPage)
+  }, [currentPage, page])
 
   const pageChange = newPage => {
     currentPage !== newPage && history.push(`/users?page=${newPage}`)
   }
 
-  useEffect(() => {
-    currentPage !== page && setPage(currentPage)
-  }, [currentPage, page])
+  const  filterUserList = (userList) => {
+    const filterdList = userList.filter(user => user.position !== 'Admin')
+    return filterdList
+  }
 
   return (
     <CRow>
@@ -78,30 +83,42 @@ const Users = () => {
           </CCardHeader>
           <CCardBody>
           <CDataTable
-            items={userList}
+            items={filterUserList(userList)}
             fields={[
-              { key: 'username', _classes: 'font-weight-bold' },
-              'plate', 'position', 'createdAt', 'bank', 'balance'
+              { key: 'username', _classes: 'font-weight-bold', _style: { width: '15%'}, sorter: false},
+              { key: 'plate', _classes: 'text-center', _style: { width: '15%'}, sorter: false},
+              { key: 'ID', label: 'Card ID', _classes: 'text-center'},
+              { key: 'position', _classes: 'text-center', sorter: false },
+              { key: 'createdAt', _classes: 'text-center'},
+              { key: 'bank', _classes: 'text-center', sorter: false }
             ]}
             hover
             striped
+            columnFilter
+            sorter
             loading={loading}
-            // itemsPerPage={10}
-            // activePage={page}
+            itemsPerPage={10}
+            activePage={page}
             // clickableRows
             // onRowClick={(item) => history.push(`/users/${item.id}`)}
             scopedSlots = {{
               'plate':
                 (item)=>(
-                  <td>
+                  <td className="text-center">
                     <CBadge color={getBadge(item.plate)}>
                       {item.plate}
                     </CBadge>
                   </td>
                 ),
+              'ID':
+              (item)=>(
+                <td className="text-center">
+                  <strong>{item.ID}</strong>
+                </td>
+              ),
               'position':
                 (item)=>(
-                  <td>
+                  <td className="text-center">
                     <CBadge color={getBadge(item.position)}>
                       {item.position}
                     </CBadge>
@@ -109,21 +126,27 @@ const Users = () => {
                 ),
               'bank':
                 (item)=>(
-                  <td>
+                  <td className="text-center">
                     <CBadge color={getBadge(item?.moneySource?.bank)}>
                       {item?.moneySource?.bank}
                     </CBadge>
                   </td>
+                ),
+              'createdAt':
+                (item)=>(
+                  <td className="text-center">
+                    {convertToDateTime(item.createdAt)}
+                  </td>
                 )
             }}
           />
-          {/* <CPagination
+          <CPagination
             activePage={page}
             onActivePageChange={pageChange}
             pages={Math.ceil(userList.length/10)}
             doubleArrows={false}
             align="center"
-          /> */}
+          />
           </CCardBody>
         </CCard>
       </CCol>
