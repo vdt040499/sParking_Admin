@@ -2,6 +2,7 @@ import React from 'react'
 import Logo from '../assets/images/mainlogo.png'
 import {
   CBadge,
+  CButton,
   CDropdown,
   CDropdownItem,
   CDropdownMenu,
@@ -9,8 +10,16 @@ import {
   CImg
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
+import { useHistory } from 'react-router'
 
 const TheHeaderDropdown = () => {
+  const history = useHistory()
+
+  const onSignOut = () => {
+    localStorage.removeItem('user')
+    history.push('/login')
+  }
+
   return (
     <CDropdown
       inNav
@@ -35,7 +44,7 @@ const TheHeaderDropdown = () => {
         >
           <strong>Account</strong>
         </CDropdownItem>
-        <CDropdownItem>
+        {/* <CDropdownItem>
           <CIcon name="cil-bell" className="mfe-2" />
           Updates
           <CBadge color="info" className="mfs-auto">42</CBadge>
@@ -80,10 +89,10 @@ const TheHeaderDropdown = () => {
           Projects
           <CBadge color="primary" className="mfs-auto">42</CBadge>
         </CDropdownItem>
-        <CDropdownItem divider />
+        <CDropdownItem divider /> */}
         <CDropdownItem>
-          <CIcon name="cil-lock-locked" className="mfe-2" />
-          Lock Account
+          <CIcon name="cil-lock-locked" className="mfe-2"/>
+          <CButton onClick={onSignOut}>Sign Out</CButton>
         </CDropdownItem>
       </CDropdownMenu>
     </CDropdown>
