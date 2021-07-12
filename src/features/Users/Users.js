@@ -24,8 +24,8 @@ const getBadge = status => {
     case 'BIDV': return 'secondary'
 
     // Position
-    case 'Admin': return 'danger'
-    case 'Student': return 'info'
+    case 'teacher': return 'danger'
+    case 'student': return 'info'
     default: return 'primary'
   }
 }
@@ -50,11 +50,6 @@ const Users = () => {
       dispatch(setLoading(false))
     })
     socket.on("changeList", updateList)
-
-    // return () => {
-    //   socket.disconnect()
-    //   socket.off()
-    // }
   }, [])
 
   useEffect(() => {
@@ -89,7 +84,7 @@ const Users = () => {
               { key: 'plate', _classes: 'text-center', _style: { width: '15%'}, sorter: false},
               { key: 'ID', label: 'Card ID', _classes: 'text-center'},
               { key: 'position', _classes: 'text-center', sorter: false },
-              { key: 'createdAt', _classes: 'text-center'},
+              { key: 'createdAt', label: 'Registered', _classes: 'text-center'},
               { key: 'bank', _classes: 'text-center', sorter: false }
             ]}
             hover

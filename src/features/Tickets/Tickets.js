@@ -57,12 +57,32 @@ const Tickets = () => {
   }, [])
 
   useEffect(() => {
+    console.log(allTicketList)
+  }, [allTicketList])
+
+  useEffect(() => {
     console.log(loading)
   }, [loading])
 
-
   const pageChange = newPage => {
     currentPage !== newPage && history.push(`/tickets?page=${newPage}`)
+  }
+
+  const filterTicketList = () => {
+    let newList = []
+    newList = allTicketList.map(item => {
+      const newItem = {
+        username: item.user.username,
+        plate: item.plate,
+        position: item.user.position,
+        createdAt: item.createdAt,
+        updatedAt: item.updatedAt
+      }
+
+      return newItem
+    })
+
+    return newList
   }
 
   useEffect(() => {
@@ -78,12 +98,13 @@ const Tickets = () => {
           </CCardHeader>
           <CCardBody>
           <CDataTable
-            items={allTicketList}
+            items={filterTicketList()}
             fields={[
               { key: 'plate', _classes: 'text-center', sorter: false },
               { key: 'username', _classes: 'font-weight-bold', sorter: false },
               { key: 'position', _classes: 'text-center', sorter: false },
-              { key: 'createdAt', _classes: 'text-center' }
+              { key: 'createdAt', label: 'Check-in Time', _classes: 'text-center' },
+              { key: 'updatedAt', label: 'Check-out Time', _classes: 'text-center' }
             ]}
             hover
             striped
@@ -92,28 +113,26 @@ const Tickets = () => {
             loading={loading}
             itemsPerPage={10}
             activePage={page}
-            // clickableRows
-            // onRowClick={(item) => history.push(`/users/${item.id}`)}
             scopedSlots = {{
               'username':
               (item)=>(
                 <td>
-                    {item.user.username}
+                    {item.username}
                 </td>
               ),
               'plate':
                 (item)=>(
                   <td className="text-center">
-                    <CBadge color={getBadge(item.user.plate)}>
-                      {item.user.plate}
+                    <CBadge color={getBadge(item.plate)}>
+                      {item.plate}
                     </CBadge>
                   </td>
                 ),
               'position':
                 (item)=>(
                   <td className="text-center">
-                    <CBadge color={getBadge(item.user.position)}>
-                      {item.user.position}
+                    <CBadge color={getBadge(item.position)}>
+                      {item.position}
                     </CBadge>
                   </td>
                 ),
@@ -122,7 +141,13 @@ const Tickets = () => {
                   <td className="text-center">
                     {convertToDateTime(item.createdAt)}
                   </td>
-                )
+                ),
+              'updatedAt':
+              (item)=>(
+                <td className="text-center">
+                  {item.updatedAt === item.createdAt ? '' : convertToDateTime(item.updatedAt)}
+                </td>
+              )
             }}
           />
           <CPagination
