@@ -62,7 +62,7 @@ const Tickets = () => {
 
 
   const pageChange = newPage => {
-    currentPage !== newPage && history.push(`/users?page=${newPage}`)
+    currentPage !== newPage && history.push(`/tickets?page=${newPage}`)
   }
 
   useEffect(() => {

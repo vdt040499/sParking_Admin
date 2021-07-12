@@ -30,6 +30,9 @@ const authSlice = createSlice({
     setUser(state, action) {
       state.user = action.payload
       state.authen = true
+    },
+    signOut(state) {
+      state.authen = false
     }
   },
   extraReducers: {
@@ -41,5 +44,5 @@ const authSlice = createSlice({
 })
 
 const { actions, reducer } = authSlice
-export const { setUser } = actions
+export const { setUser, signOut } = actions
 export default reducer

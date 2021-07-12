@@ -20,10 +20,7 @@ import { set } from '../store/reducers/styleSlice'
 import routes from '../routes'
 
 import {
-  TheHeaderDropdown,
-  TheHeaderDropdownMssg,
-  TheHeaderDropdownNotif,
-  TheHeaderDropdownTasks
+  TheHeaderDropdown
 }  from './index'
 
 const TheHeader = () => {

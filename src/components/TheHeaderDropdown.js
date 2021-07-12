@@ -11,13 +11,17 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { useHistory } from 'react-router'
+import { useDispatch } from 'react-redux'
+import { signOut } from 'src/store/reducers/authSlice'
 
 const TheHeaderDropdown = () => {
   const history = useHistory()
+  const dispatch = useDispatch()
 
   const onSignOut = () => {
     localStorage.removeItem('user')
-    history.push('/login')
+    dispatch(signOut())
+    history.push('/')
   }
 
   return (

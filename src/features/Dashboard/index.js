@@ -51,6 +51,11 @@ const Dashboard = () => {
   }
 
   useEffect(() => {
+
+    if(!auth.authen) {
+      history.push("/")
+    }
+
     socket.emit("initial", (users, ticketList, allTicketList, dateArr, lastTicketArr, space) => {
       dispatch(setUserList(users))
       dispatch(setTicketList(ticketList))
@@ -68,7 +73,7 @@ const Dashboard = () => {
   }, [])
 
   const pageChange = newPage => {
-    currentPage !== newPage && history.push(`/users?page=${newPage}`)
+    currentPage !== newPage && history.push(`/dashboard?page=${newPage}`)
   }
 
   const  filterUserList = (userList) => {
