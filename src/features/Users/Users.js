@@ -24,7 +24,7 @@ const getBadge = status => {
     case 'BIDV': return 'secondary'
 
     // Position
-    case 'teacher': return 'danger'
+    case 'lecturer': return 'danger'
     case 'student': return 'info'
     default: return 'primary'
   }
@@ -53,6 +53,10 @@ const Users = () => {
   }, [])
 
   useEffect(() => {
+    console.log('User List: ', userList)
+  }, [userList])
+
+  useEffect(() => {
     console.log(loading)
   }, [loading])
 
@@ -65,7 +69,7 @@ const Users = () => {
   }
 
   const  filterUserList = (userList) => {
-    const filterdList = userList.filter(user => user.position !== 'Admin')
+    const filterdList = userList.filter(user => user.position !== 'admin')
     return filterdList
   }
 
@@ -85,7 +89,7 @@ const Users = () => {
               { key: 'ID', label: 'Card ID', _classes: 'text-center'},
               { key: 'position', _classes: 'text-center', sorter: false },
               { key: 'createdAt', label: 'Registered', _classes: 'text-center'},
-              { key: 'bank', _classes: 'text-center', sorter: false }
+              { key: 'bank', _classes: 'text-center', _style: { width: '15%' }, sorter: false, filter: false }
             ]}
             hover
             striped
@@ -122,9 +126,11 @@ const Users = () => {
               'bank':
                 (item)=>(
                   <td className="text-center">
-                    <CBadge color={getBadge(item?.moneySource?.bank)}>
-                      {item?.moneySource?.bank}
-                    </CBadge>
+                    {item?.moneySource.map((moso) => (
+                      <CBadge color={getBadge(moso?.bank)} className="mr-1">
+                        {moso?.bank}
+                      </CBadge>
+                    ))}
                   </td>
                 ),
               'createdAt':

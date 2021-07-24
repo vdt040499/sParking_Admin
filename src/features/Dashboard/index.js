@@ -72,12 +72,16 @@ const Dashboard = () => {
     // }
   }, [])
 
+  useEffect(() => {
+    currentPage !== page && setPage(currentPage)
+  }, [currentPage, page])
+
   const pageChange = newPage => {
     currentPage !== newPage && history.push(`/dashboard?page=${newPage}`)
   }
 
   const  filterUserList = (userList) => {
-    const filterdList = userList.filter(user => user.position !== 'Admin')
+    const filterdList = userList.filter(user => user.position !== 'admin')
     return filterdList
   }
 

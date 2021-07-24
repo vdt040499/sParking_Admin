@@ -1,4 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import systemApi from 'src/apis/systemApi'
 
 const initSystem = {
   ticketList: [],
@@ -8,6 +9,15 @@ const initSystem = {
   space: {},
   loading: false
 }
+
+export const update = createAsyncThunk(
+  'system/update',
+  async ({ spaceId, data }) => {
+    const dataResponse = await systemApi.updateSystem(spaceId, data)
+    const space = dataResponse.space
+    return space
+  }
+)
 
 const systemSlice = createSlice({
   name: 'system',
@@ -30,6 +40,11 @@ const systemSlice = createSlice({
     },
     setLoading (state, action) {
       state.loading = action.payload
+    }
+  },
+  extraReducers: {
+    [update.fulfilled]: (state, action) => {
+        state.space = action.payload;
     }
   }
 })
