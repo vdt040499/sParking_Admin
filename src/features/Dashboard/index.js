@@ -15,7 +15,7 @@ import socket from '../../socketIo.js'
 import MainChartExample from '../../components/charts/MainChartExample'
 
 import { setUserList } from '../../store/reducers/userSlice'
-import { setTicketList, setLastDateArr, setLastTicketArr, setSpace, setAllTicketList } from '../../store/reducers/systemSlice'
+import { setTicketList, setLastDateArr, setLastTicketArr, setSpace, setAllTicketList, setRevTicketArr } from '../../store/reducers/systemSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { Redirect, useHistory, useLocation } from 'react-router'
 import { convertToDate } from 'src/reusable/formatDateTime.js'
@@ -41,6 +41,7 @@ const Dashboard = () => {
   const ticketList = useSelector(state => state.system.ticketList)
   const lastDateArr = useSelector(state => state.system.lastDateArr)
   const lastTicketArr = useSelector(state => state.system.lastTicketArr)
+  const revTicketArr = useSelector(state => state.system.revTicketArr)
   const space = useSelector(state => state.system.space)
 
   const updateList = (users, ticketList, allTicketList, updatedSpace) => {
@@ -56,12 +57,14 @@ const Dashboard = () => {
       history.push("/")
     }
 
-    socket.emit("initial", (users, ticketList, allTicketList, dateArr, lastTicketArr, space) => {
+    socket.emit("initial", (users, ticketList, allTicketList, dateArr, lastTicketArr, revTicketArr, space) => {
       dispatch(setUserList(users))
       dispatch(setTicketList(ticketList))
       dispatch(setAllTicketList(allTicketList))
       dispatch(setLastDateArr(dateArr))
       dispatch(setLastTicketArr(lastTicketArr))
+      console.log('Rev: ', revTicketArr)
+      dispatch(setRevTicketArr(revTicketArr))
       dispatch(setSpace(space))
     })
     socket.on("changeList", updateList)
@@ -97,7 +100,7 @@ const Dashboard = () => {
             <CCol sm="7" className="d-none d-md-block">
             </CCol>
           </CRow>
-          <MainChartExample space={space} lastDateArr={lastDateArr} lastTicketArr={lastTicketArr} style={{height: '300px', marginTop: '40px'}}/>
+          <MainChartExample space={space} lastDateArr={lastDateArr} lastTicketArr={lastTicketArr} revTicketArr={revTicketArr} style={{height: '300px', marginTop: '40px'}}/>
         </CCardBody>
       </CCard>
 

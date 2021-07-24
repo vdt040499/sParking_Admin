@@ -6,6 +6,7 @@ const initSystem = {
   allTicketList: [],
   lastDateArr: [],
   lastTicketArr: [],
+  revTicketArr: [],
   space: {},
   loading: false
 }
@@ -35,6 +36,9 @@ const systemSlice = createSlice({
     setLastTicketArr (state, action) {
       state.lastTicketArr = action.payload
     },
+    setRevTicketArr (state, action) {
+      state.revTicketArr = action.payload
+    },
     setSpace (state, action) {
       state.space = action.payload
     },
@@ -50,5 +54,5 @@ const systemSlice = createSlice({
 })
 
 const { actions, reducer } = systemSlice
-export const { setTicketList, setAllTicketList, setLastDateArr, setLastTicketArr, setSpace, setLoading } = actions
+export const { setTicketList, setAllTicketList, setLastDateArr, setLastTicketArr, setRevTicketArr, setSpace, setLoading } = actions
 export default reducer

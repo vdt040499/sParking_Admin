@@ -10,6 +10,10 @@ import ChartBarSimple from '../charts/ChartBarSimple'
 const WidgetsDropdown = (props) => {
   const { ticketList, space, lastTicketArr } = props
 
+  const ticketToMoney = (ticketArr) => {
+    return ticketArr.reduce((sum, ticket) => sum += ticket.price, 0)
+  }
+
   const numberWithCommas = (x) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
@@ -78,7 +82,7 @@ const WidgetsDropdown = (props) => {
       <CCol sm="6" lg="3">
         <CWidgetDropdown
           color="gradient-warning"
-          header={numberWithCommas(ticketList.length * 5000).toString()}
+          header={numberWithCommas(ticketToMoney(ticketList)).toString()}
           text="Revenue"
           footerSlot={
             <ChartBarSimple

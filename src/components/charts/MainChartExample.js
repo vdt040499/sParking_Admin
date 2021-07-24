@@ -10,11 +10,7 @@ const brandInfo = getStyle('info') || '#20a8d8'
 
 
 const MainChartExample = (attributes) => {
-  const { space, lastDateArr, lastTicketArr } = attributes
-
-  const ticketToMoney = (ticketArr) => {
-    return ticketArr.map(ticket => ticket * 5000)
-  }
+  const { space, lastDateArr, lastTicketArr, revTicketArr } = attributes
 
   const defaultDatasetsForLine = (()=>{
     const data1 = lastTicketArr
@@ -68,7 +64,7 @@ const MainChartExample = (attributes) => {
   )()
 
   const defaultDatasetsForBar = (() => {
-    const data2 = ticketToMoney(lastTicketArr)
+    const data2 = revTicketArr
 
     return [
         {
